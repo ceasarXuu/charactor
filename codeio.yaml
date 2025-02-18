@@ -1,0 +1,72 @@
+
+# 项目基本信息
+project:
+  name: ComfyUI Character Nodes
+  description: ComfyUI的角色相关自定义节点集合
+  version: 1.0.0
+
+# 项目结构描述
+structure:
+  root: ./
+  main_modules:
+    - __init__.py           # 模块入口文件,注册节点
+    - nodes/                # 节点实现目录
+      - base_node.py        # 基础节点类
+      - character_node.py   # 角色相关节点实现
+    - utils/                # 工具函数目录
+      - image_process.py    # 图像处理工具
+      - model_loader.py     # 模型加载工具
+
+# 主要功能说明
+features:
+  character_generation:
+    description: 角色生成相关功能
+    main_nodes:
+      - CharacterGenerationNode:
+          inputs:
+            - prompt: str      # 角色描述提示词
+            - seed: int       # 随机种子
+          outputs:
+            - image: Image    # 生成的角色图像
+            
+  character_edit:
+    description: 角色编辑相关功能
+    main_nodes:
+      - CharacterEditNode:
+          inputs:
+            - image: Image    # 输入角色图像
+            - edit_type: str  # 编辑类型
+          outputs:
+            - image: Image    # 编辑后的图像
+
+# 工具函数说明
+utils:
+  image_process:
+    - process_image:
+        description: 图像预处理函数
+        inputs:
+          - image: PIL.Image  # 输入图像
+          - params: dict     # 处理参数
+        outputs:
+          - image: PIL.Image  # 处理后的图像
+          
+  model_loader:
+    - load_model:
+        description: 加载AI模型
+        inputs:
+          - model_path: str   # 模型路径
+          - device: str      # 运行设备
+        outputs:
+          - model: object    # 加载的模型对象
+
+# 依赖说明
+dependencies:
+  - torch>=1.7.0
+  - PIL>=8.0.0
+  - numpy>=1.19.0
+
+# 配置项
+configs:
+  default_device: cuda
+  model_path: ./models
+  cache_dir: ./cache
